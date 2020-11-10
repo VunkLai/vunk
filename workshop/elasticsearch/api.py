@@ -1,3 +1,5 @@
+from functools import wraps
+
 import requests
 
 
@@ -70,10 +72,12 @@ class Document:
         if refresh:
             params = {'refresh': 'true'}
         if id:
-            response = self.session.put(name, '_doc', id, json=doc, params=params)
+            response = self.session.put(
+                name, '_doc', id, json=doc, params=params)
         else:
             # Automatic ID Generation
-            response = self.session.post(name, '_doc/', json=doc, params=params)
+            response = self.session.post(
+                name, '_doc/', json=doc, params=params)
         if response.status_code == requests.codes.created:
             return response.json()
         raise ElasticsearchError(f'{response.status_code}: {response.text}')
@@ -87,7 +91,8 @@ class Document:
         ndjson += '\n'
         headers = {'Content-Type': 'application/x-ndjson'}
 
-        response = self.session.post(name, '_bulk', data=ndjson, headers=headers)
+        response = self.session.post(
+            name, '_bulk', data=ndjson, headers=headers)
         if response.status_code == requests.codes.ok:
             return response.json()
         raise ElasticsearchError(response.text)

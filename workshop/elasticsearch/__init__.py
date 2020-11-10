@@ -1,5 +1,5 @@
-from .api import Cluster, Document, Index
-from .session import ElasticsearchSession
+from workshop.elasticsearch.api import Cluster, Document, Index
+from workshop.elasticsearch.session import ElasticsearchSession
 
 
 class Elasticsearch:
@@ -8,6 +8,7 @@ class Elasticsearch:
     _document = None
 
     def __init__(self, host):
+        self.host = host
         self.session = ElasticsearchSession(host)
 
         self.cluster = Cluster(self.session)
